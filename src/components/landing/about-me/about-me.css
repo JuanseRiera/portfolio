@@ -38,6 +38,10 @@
 .aboutMe__articles {
   grid-area: 1 / 3 / 3 / 4;
   background-color: #abaddd;
+  color: #000;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .aboutMe__direction {

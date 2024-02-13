@@ -8,7 +8,7 @@ export const Direction = component$(() => {
       font-weight: 600;
     }
     .direction__time-zone {
-      color: #6053ad;
+      color: #2b264a;
       letter-spacing: 1px;
       line-height: 7rem;
       font-weight: 700;

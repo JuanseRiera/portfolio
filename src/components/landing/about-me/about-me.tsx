@@ -4,6 +4,7 @@ import { Presentation } from "./presentation/presentation";
 import { Avatar } from "./avatar/avatar";
 import { SocialMedia } from "./social-media/social-media";
 import { Direction } from "./direction/direction";
+import { GoToArticle } from "./go-to-article/go-to-article";
 
 export const AboutMeSection = component$(() => {
 	useStylesScoped$(styles);
@@ -19,7 +20,9 @@ export const AboutMeSection = component$(() => {
 			<div class="aboutMe__social-media">
 				<SocialMedia />
 			</div>
-			<div class="aboutMe__box aboutMe__articles"> </div>
+			<div class="aboutMe__box aboutMe__articles">
+				<GoToArticle />
+			</div>
 			<div class="aboutMe__box aboutMe__direction">
 				<Direction />
 			</div>
