@@ -43,6 +43,9 @@
 .aboutMe__direction {
   grid-area: 3 / 3 / 5 / 4;
   background-color: #fed2cf;
+  color: #000;
+  display: flex;
+  align-items: center;
 }
 
 .aboutMe__check-work {
