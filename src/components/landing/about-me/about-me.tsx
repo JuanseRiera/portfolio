@@ -5,6 +5,7 @@ import { Avatar } from "./avatar/avatar";
 import { SocialMedia } from "./social-media/social-media";
 import { Direction } from "./direction/direction";
 import { GoToArticle } from "./go-to-article/go-to-article";
+import { GoToWork } from "./go-to-work/go-to-work";
 
 export const AboutMeSection = component$(() => {
 	useStylesScoped$(styles);
@@ -26,7 +27,9 @@ export const AboutMeSection = component$(() => {
 			<div class="aboutMe__box aboutMe__direction">
 				<Direction />
 			</div>
-			<div class="aboutMe__box aboutMe__check-work"> </div>
+			<div class="aboutMe__box aboutMe__check-work">
+				<GoToWork />
+			</div>
 			<div class="aboutMe__box aboutMe__contact-me"> </div>
 		</div>
 	);
