@@ -1,0 +1,14 @@
+.landing {
+  height: 100vh;
+  width: 100vw;
+  padding: 1.5rem;
+}
+
+.landing__navbar {
+  height: 5.5rem;
+  margin-bottom: 2rem;
+}
+
+.landing__about {
+  height: calc(100% - 5.5rem - 2rem);
+}
