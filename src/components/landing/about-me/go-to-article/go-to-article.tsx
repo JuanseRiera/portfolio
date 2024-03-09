@@ -1,8 +1,15 @@
-import { component$,useStylesScoped$ } from "@builder.io/qwik";
+import { component$, useStylesScoped$ } from "@builder.io/qwik";
 
 export const GoToArticle = component$(() => {
-  useStylesScoped$(`
+	useStylesScoped$(`
     .goToArticle {
+      height: 100%;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .goToArticle__title {
       font-size: 4rem;
       line-height: 5rem;
       font-weight: 600;
@@ -14,9 +21,9 @@ export const GoToArticle = component$(() => {
     }
   `);
 	return (
-		<>
-			<h2 class="goToArticle">Articles</h2>
-      <p class="goToArticle__soon">Comming soon...</p>
-		</>
+		<div class="goToArticle">
+			<h2 class="goToArticle__title">Articles</h2>
+			<p class="goToArticle__soon">Comming soon...</p>
+		</div>
 	);
 });

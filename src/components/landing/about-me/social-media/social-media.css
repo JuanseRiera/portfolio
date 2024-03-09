@@ -17,15 +17,16 @@
   align-items: center;
   justify-content: center;
   min-height: 0;
+  transition: transform 100ms ease-in;
+}
+
+.social__link:hover {
+  transform: scale3d(1.025, 1.025, 1.025);
 }
 
 .social__link-icon {
   height: 100%;
   width: 100%;
-}
-
-.social__link:hover .social__link-icon {
-  fill: #a16069;
 }
 
 .social__link-linkedin {

@@ -1,7 +1,14 @@
 import { component$, useStylesScoped$ } from "@builder.io/qwik";
 
 export const Presentation = component$(() => {
-  useStylesScoped$(`
+	useStylesScoped$(`
+    .presentation {
+      height: 100%;
+      padding: 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
     .presentation__title {
       font-size: 5rem;
       line-height: 1.2;
@@ -17,7 +24,7 @@ export const Presentation = component$(() => {
     }
   `);
 	return (
-		<>
+		<div class="presentation">
 			<h1 class="presentation__title">
 				Hi, my
 				<br />
@@ -26,6 +33,6 @@ export const Presentation = component$(() => {
 			<p class="presentation__paragraph">
 				I'm a <b>front-end developer</b> currently working at Slingr.
 			</p>
-		</>
+		</div>
 	);
 });
