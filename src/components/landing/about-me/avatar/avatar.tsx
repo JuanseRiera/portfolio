@@ -1,9 +1,80 @@
-import { useStyles$, useStylesScoped$, component$ } from "@builder.io/qwik";
+import {
+	useStyles$,
+	useStylesScoped$,
+	component$,
+	useVisibleTask$,
+} from "@builder.io/qwik";
 import styles from "./avatar.css?inline";
 
 export const Avatar = component$(() => {
-  useStylesScoped$(styles);
+	useStylesScoped$(styles);
 	useStyles$(styles);
+
+	// eslint-disable-next-line qwik/no-use-visible-task
+	useVisibleTask$(() => {
+    
+		const avatar = document.querySelector<HTMLElement>("#avatar");
+		const head = document.querySelector<HTMLElement>("#head");
+		const leftEye = document.querySelector<HTMLElement>("#leftEye");
+		const rightEye = document.querySelector<HTMLElement>("#rightEye");
+		const leftEyebrow = document.querySelector<HTMLElement>("#leftEyebrow");
+		const rightEyebrow = document.querySelector<HTMLElement>("#rightEyebrow");
+		const maxEyebrowMovement = 5;
+
+		if (!head || !leftEye || !rightEye || !leftEyebrow || !rightEyebrow || !avatar) return;
+
+		const headRect = head.getBoundingClientRect();
+		const headCenterPosition = {
+			x: headRect.left + headRect.width / 2,
+			y: headRect.top + headRect.height / 2,
+		};
+
+		const getAngle = (
+			mouseX: number,
+			mouseY: number,
+			headX: number,
+			headY: number
+		) => {
+			const dy = headY - mouseY;
+			const dx = headX - mouseX;
+			return Math.atan2(dy, dx);
+		};
+
+		const getLeftSideFactor = (mouseX: number) => {
+			// From the left till the center of the head is giving a factor that goes from 1 to 0
+			return (mouseX - headCenterPosition.x) / headCenterPosition.x;
+		};
+
+		const getRightSideFacor = (mouseX: number) => {
+			// From the center of the head till the end of the viewport is giving a factor that goes from 0 to 1
+			return (
+				(mouseX - headCenterPosition.x) /
+				(window.innerWidth - headCenterPosition.x)
+			);
+		};
+
+		document.addEventListener("mousemove", (e) => {
+			const angle =
+				getAngle(
+					e.clientX,
+					e.clientY,
+					headCenterPosition.x,
+					headCenterPosition.y
+				) + 4.71239;
+
+			leftEye.style.transform = `rotate(${angle}rad)`;
+			rightEye.style.transform = `rotate(${angle}rad)`;
+
+			const eyebrowMovement =
+				(e.clientX < headCenterPosition.x
+					? getLeftSideFactor(e.clientX)
+					: getRightSideFacor(e.clientX)) * maxEyebrowMovement;
+
+			leftEyebrow.style.transform = ` translateY(${eyebrowMovement}px)`;
+			rightEyebrow.style.transform = ` translateY(${-eyebrowMovement}px)`;
+		});
+	});
+
 	return (
 		<div id="avatar" class="avatar">
 			<svg
@@ -47,12 +118,12 @@ export const Avatar = component$(() => {
 				</g>
 				<g id="eyebrows">
 					<path
-						id="rightEyebrow"
+						id="leftEyebrow"
 						class="svg-fill-secondary svg-stroke"
 						d="M119.11 165.532L118.11 171.342C117.964 172.08 117.647 172.775 117.184 173.368C116.72 173.961 116.124 174.437 115.442 174.758C114.761 175.078 114.014 175.233 113.261 175.212C112.509 175.19 111.772 174.991 111.11 174.632C98.43 167.862 65.62 156.442 33 189.832C34.65 172.212 61.26 142.602 116 160.602C117.034 160.897 117.923 161.563 118.497 162.472C119.071 163.382 119.289 164.471 119.11 165.532Z"
 					/>
 					<path
-						id="leftEyebrow"
+						id="rightEyebrow"
 						class="svg-fill-secondary svg-stroke"
 						d="M173.035 165.897L173.815 171.707C173.922 172.445 174.202 173.148 174.632 173.758C175.062 174.368 175.631 174.868 176.29 175.217C176.95 175.566 177.683 175.754 178.429 175.766C179.176 175.778 179.914 175.614 180.585 175.287C193.585 169.087 237.985 156.117 268.955 191.057C265.665 155.927 224.815 147.607 176.235 161.157C175.217 161.423 174.33 162.051 173.741 162.923C173.152 163.796 172.901 164.853 173.035 165.897Z"
 					/>
@@ -79,29 +150,32 @@ export const Avatar = component$(() => {
 				</g>
 				<g id="eyes">
 					<path
-						d="M106.938 248.576C107.339 248.699 107.339 248.101 107.339 247.336C100.193 229.762 91.814 222.883 80.301 222.883C70.789 222.883 52.1301 224.412 45 239.706C45 239.706 56.1 255 73.171 255C90.2419 255 102.914 251.19 102.914 251.19L105.391 250.626L106.69 250.548L106.938 248.576Z"
+						id="leftEyeContainer"
 						class="svg-stroke"
+						d="M112.839 247.551C112.838 247.798 112.836 247.991 112.823 248.136L112.516 248.043L112.442 248.631L112.245 250.191L111.361 250.244L111.32 250.247L111.28 250.256L108.803 250.82L108.786 250.824L108.77 250.829L108.77 250.829L108.769 250.829L108.762 250.831L108.736 250.839C108.713 250.846 108.677 250.856 108.629 250.87C108.534 250.897 108.392 250.938 108.204 250.989C107.828 251.092 107.271 251.24 106.548 251.417C105.102 251.772 102.995 252.246 100.356 252.72C95.0758 253.669 87.6702 254.617 79.171 254.617C70.7876 254.617 63.851 250.861 58.9911 247.076C56.5637 245.185 54.6633 243.294 53.3706 241.876C52.7245 241.167 52.2308 240.578 51.8997 240.167C51.7674 240.003 51.6611 239.867 51.5814 239.764C55.0963 232.449 61.3375 228.388 67.9183 226.15C74.5866 223.882 81.5653 223.5 86.301 223.5C91.944 223.5 96.7968 225.181 101.126 229.011C105.457 232.842 109.29 238.848 112.839 247.551ZM112.787 248.347C112.787 248.349 112.786 248.35 112.786 248.35C112.786 248.35 112.786 248.349 112.787 248.347Z"
 					/>
-					<ellipse
-						cx="76.4036"
-						cy="239.812"
-						rx="9.0911"
-						ry="8.35052"
-						id="rightEye"
-						class="svg-fill-primary eye"
-					/>
+					<g id="leftEye">
+						<path d="M82 254.617C73.4396 254.617 66.5 247.678 66.5 239.117C66.5 230.557 73.4396 223.617 82 223.617C90.5604 223.617 97.5 230.557 97.5 239.117C97.5 247.678 90.5604 254.617 82 254.617Z" />
+						<path
+							id="leftPupil"
+							class="svg-fill-primary svg-stroke"
+							d="M88 233C88 236.314 85.3137 239 82 239C78.6863 239 76 236.314 76 233C76 229.686 78.6863 227 82 227C85.3137 227 88 229.686 88 233Z"
+						/>
+					</g>
+
 					<path
-						d="M187.061 248.577C186.661 248.699 186.661 248.101 186.661 247.336C193.807 229.762 202.186 222.883 213.698 222.883C223.211 222.883 241.869 224.412 249 239.706C249 239.706 237.899 255 220.829 255C203.758 255 191.085 251.19 191.085 251.19L188.609 250.626L187.31 250.548L187.061 248.577Z"
+						id="rightEyeContainer"
 						class="svg-stroke"
+						d="M186.5 247.551C186.5 247.798 186.503 247.991 186.516 248.136L186.822 248.043L186.897 248.631L187.093 250.191L187.978 250.244L188.019 250.247L188.059 250.256L190.536 250.82L190.552 250.824L190.569 250.829L190.569 250.829L190.57 250.829L190.577 250.831L190.603 250.839C190.626 250.846 190.662 250.856 190.709 250.87C190.805 250.897 190.947 250.938 191.135 250.989C191.511 251.092 192.068 251.24 192.791 251.417C194.236 251.772 196.344 252.246 198.983 252.72C204.263 253.669 211.669 254.617 220.168 254.617C228.551 254.617 235.488 250.861 240.348 247.076C242.775 245.185 244.676 243.294 245.968 241.876C246.614 241.168 247.108 240.578 247.439 240.167C247.571 240.003 247.678 239.867 247.757 239.764C244.243 232.449 238.001 228.388 231.421 226.15C224.752 223.882 217.774 223.5 213.038 223.5C207.395 223.5 202.542 225.181 198.213 229.011C193.882 232.842 190.049 238.848 186.5 247.551ZM186.552 248.347C186.552 248.349 186.553 248.35 186.553 248.35C186.553 248.349 186.552 248.349 186.552 248.347Z"
 					/>
-					<ellipse
-						cx="217.0911"
-						cy="239.35053"
-						rx="9.0911"
-						ry="8.35053"
-						id="leftEye"
-						class="svg-fill-primary eye"
-					/>
+					<g id="rightEye">
+						<path d="M217.339 254.617C208.779 254.617 201.839 247.678 201.839 239.117C201.839 230.557 208.779 223.617 217.339 223.617C225.9 223.617 232.839 230.557 232.839 239.117C232.839 247.678 225.9 254.617 217.339 254.617Z" />
+						<path
+							id="rightPupil"
+							class="svg-fill-primary svg-stroke"
+							d="M223 233C223 236.314 220.314 239 217 239C213.686 239 211 236.314 211 233C211 229.686 213.686 227 217 227C220.314 227 223 229.686 223 233Z"
+						/>
+					</g>
 				</g>
 			</svg>
 

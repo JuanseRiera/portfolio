@@ -12,25 +12,12 @@
 .avatar__head {
   width: 65%;
   z-index: 1;
-  transform-style: preserve-3d;
 }
 
-.eyes {
-  position: absolute;
-}
-
+#rightEye,
 #leftEye {
-  position: absolute;
-  top: 39%;
-  right: 34%;
-  height: 3%;
-}
-
-#rightEye {
-  position: absolute;
-  top: 9.9rem;
-  left: 6.4rem;
-  height: 0.8rem;
+  transform-box: fill-box;
+  transform-origin: center;
 }
 
 .avatar__body {
